@@ -13,6 +13,17 @@
     {% endfor %}
   </div>
 </div>
+<div class="mx-3 mb-1 mt-3">
+    {% for r in detail.room_type_hotel %}
+    <p>Type: <span>{{r.type}}</span></p>
+    <p>Nombre de lits: <span>{{r.number_beds}}</span></p>
+    <p>Prix: <span class="bg-success mx-2 text-white fs-4">${{r.price}}</span></p>
+    <p>Capacité: <span>{{r.room_capacity}} personne{{r.room_capacity|pluralize}}</span></p>
+    <p ><a class="text-warning fw-3" href="{% url 'hotel:room-type-detail' slug=r.hotel.slug rt_slug=r.slug %}">More details</a></p>
+    {% endfor %}
+
+</div>
+
 
 
 

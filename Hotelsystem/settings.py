@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'userauths',
     'addons',
     'user_dashboard',
+    'booking',
 
     # modules python
     'crispy_forms',

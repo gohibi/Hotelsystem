@@ -70,6 +70,9 @@ class Hotel(models.Model):
     
     def hotel_gallery(self):
         return HotelGallery.objects.filter(hotel=self)
+    
+    def room_type_hotel(self):
+        return RoomType.objects.filter(hotel=self)
 
 
 
@@ -113,7 +116,7 @@ class HotelFaq(models.Model):
 
 class RoomType(models.Model):
     hotel =models.ForeignKey(Hotel,on_delete=models.CASCADE)
-    type = models.CharField(max_length=10)
+    type = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=12, decimal_places=2)
     number_beds = models.PositiveIntegerField(default=0)
     room_capacity = models.PositiveIntegerField(default=0)
@@ -145,11 +148,11 @@ class Room(models.Model):
     room_type = models.ForeignKey(RoomType,on_delete=models.CASCADE)
     room_number = models.CharField(max_length=1000)
     is_available = models.BooleanField(default=True)
-    rid = ShortUUIDField(unique=True, max_length=8, prefix="ROOM", alphabet="0123456789")
+    rid = ShortUUIDField(unique=True, max_length=10,length=6, prefix="ROOM", alphabet="0123456789")
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.room_type.type}-{self.hotel.name}-{self.price}'
+        return f'{self.room_type.type}-{self.hotel.name}-{self.room_type.price  }'
 
     class Meta:
         verbose_name_plural = 'Rooms'
