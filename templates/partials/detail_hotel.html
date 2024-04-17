@@ -1,0 +1,19 @@
+  {% extends 'partials/base.html' %}
+  {% load static %}
+  {% block content %}
+<div class="mx-3 mb-1 mt-3">
+    {% for image_gallery in detail.hotel_gallery.all %}
+<img src="{{image_gallery.image.url}}" alt="" width="200" height="200">
+{% endfor %}
+<h1>{{detail.name}}</h1>
+<p>description: <span>{{detail.description}}</span></p>
+<div class="mt-1 mb-0 text-muted small">
+    {% for tag in detail.tags.all %}
+    <a href="" class="fs-4"><span class="mr-2"><i class="fa fa-tag" aria-hidden="true"></i>{{tag.name}}</span></a>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+{% endblock%}

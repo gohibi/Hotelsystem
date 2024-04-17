@@ -4,7 +4,8 @@ from shortuuid.django_fields import ShortUUIDField
 import shortuuid
 from django.utils.text import slugify
 from django.utils.html import mark_safe
-
+from django_ckeditor_5.fields import CKEditor5Field
+from taggit.managers import TaggableManager
 # Create your models here.
 HOTEL_STATUS = {
     ('Draft','Draft'),
@@ -34,17 +35,18 @@ PAYMENT_STATUS = {
     ('expired','Expired')
 }
 
+
 class Hotel(models.Model):
     user = models.ForeignKey(User , on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True ,max_length=2000)
     image = models.FileField(upload_to='hotel-images')
     address = models.CharField(max_length=200)
     mobile = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
     status = models.CharField(max_length=20, choices=HOTEL_STATUS , default="Live")
 
-    tags = models.CharField(max_length=200,help_text="Separate tags with comma")
+    tags = TaggableManager(blank=True)
     views = models.IntegerField(default=0)
     featured = models.BooleanField(default=False)
     hid = ShortUUIDField(unique=True,length=10, max_length=15, prefix="HTL", alphabet="0123456789")
@@ -66,6 +68,8 @@ class Hotel(models.Model):
     def thumbnail(self):
         return mark_safe("<img src='%s' width='50' height='50' style:'cover-fit:cover; border-raduis:6px' />" % (self.image.url))
     
+    def hotel_gallery(self):
+        return HotelGallery.objects.filter(hotel=self)
 
 
 
@@ -217,4 +221,6 @@ class StaffOnDuty(models.Model):
 
     def __str__(self):
         return f"{self.staff_id}"
+    class Meta:
+        verbose_name_plural ="Staff on duties"
     
